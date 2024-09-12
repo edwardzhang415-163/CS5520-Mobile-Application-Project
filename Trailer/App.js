@@ -11,7 +11,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header appName={appName} />
-      <Input onChangeText={setInputText} />
+      <Input onChangeText={setInputText} autoFocus={true} />
       <Text>{inputText}</Text>
       <Text>Welcome to {appName}</Text>
       <StatusBar style="auto" />
