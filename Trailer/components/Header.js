@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const Header = () => {
+const Header = (props) => {
   return (
     <View>
-      <Text>Header Text</Text>
+      <Text>{props.appName}</Text>
     </View>
   );
 };
