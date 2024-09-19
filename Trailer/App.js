@@ -5,7 +5,7 @@ import Input from './components/Input';
 import React, { useState } from 'react';
 
 export default function App() {
-  const appName = 'MyApp';
+  const appName = "Welcome to Edward's awesome App";
   const [inputText, setInputText] = useState('');
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,7 +14,9 @@ export default function App() {
     setConfirmedText(text);
     setModalVisible(false);
   };
-
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
   return (
     <SafeAreaView style={styles.container}> 
       <View style={styles.topSection}> 
@@ -22,8 +24,8 @@ export default function App() {
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
       </View>
-      <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
       <View style={styles.bottomSection}> 
+        <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
         <Text style={styles.text}>Welcome to {appName}</Text>
       </View>
     </SafeAreaView>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   topSection: {
-    flex: 1, // 1/5th of the available area
+    flex: 1, 
     justifyContent: "space-evenly",
     alignItems: 'center',
   },
@@ -46,8 +48,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   bottomSection: {
-    flex: 4, // Remaining 4/5th of the available area
-    backgroundColor: '#f0f0f0', // Background color for the bottom section
+    flex: 4, 
+    backgroundColor: '#f0f0f0', 
     alignItems: 'center',
   },
 });
