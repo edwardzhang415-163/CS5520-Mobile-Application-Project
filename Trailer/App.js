@@ -18,9 +18,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header appName={appName} />
-      <Button title="Add a goal" onPress={() => setModalVisible(true)} />
-      <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
       <Text>{confirmedText}</Text>
+      <View style={{idth: '30%', marginTop: 20,}}>
+        <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+      </View>
+      <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
       <Text>Welcome to {appName}</Text>
       <StatusBar style="auto" />
     </View>

@@ -47,7 +47,9 @@ const Input = ({ onChangeText, autoFocus, onConfirm, visible }) => {
         />
         {showCounter && <Text>Character count: {text.length}</Text>}
         {message && <Text>{message}</Text>}
-        <Button title="Confirm" onPress={handleConfirm} />
+        <View style={styles.buttonContainer}>
+          <Button title="Confirm" onPress={handleConfirm} />
+        </View>
       </View>
     </Modal>
   );
@@ -62,10 +64,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'purple',
     borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
+    width: '50%',
+  },
+  buttonContainer: {
+    width: '30%', 
+    marginTop: 20,
   },
 });
 
