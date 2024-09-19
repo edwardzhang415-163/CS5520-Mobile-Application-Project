@@ -35,7 +35,7 @@ const Input = ({ onChangeText, autoFocus, onConfirm, visible }) => {
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
+    <Modal visible={visible} animationType="slide" >
       <View style={styles.container}>
         <TextInput
           ref={inputRef}
