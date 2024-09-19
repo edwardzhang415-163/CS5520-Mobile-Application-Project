@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Text, Button, StyleSheet, Modal } from 'react-native';
 
-const Input = ({ onChangeText, autoFocus }) => {
+const Input = ({ onChangeText, autoFocus, onConfirm, visible }) => {
   const [text, setText] = useState('');
   const [showCounter, setShowCounter] = useState(false);
   const [message, setMessage] = useState('');
@@ -29,29 +29,50 @@ const Input = ({ onChangeText, autoFocus }) => {
     }
   };
 
+  const handleConfirm = () => {
+    console.log(text);
+    onConfirm(text);
+  };
+
   return (
-    <View>
-      <TextInput
-        ref={inputRef}
-        style={styles.input}
-        placeholder='Enter text here'
-        value={text}
-        onChangeText={handleChangeText}
-        onBlur={handleBlur}
-      />
-      {showCounter && <Text>Character count: {text.length}</Text>}
-      {message && <Text>{message}</Text>}
-    </View>
+    <Modal visible={visible} animationType="slide" >
+      <View style={styles.container}>
+        <TextInput
+          ref={inputRef}
+          style={styles.input}
+          placeholder='Enter text here'
+          value={text}
+          onChangeText={handleChangeText}
+          onBlur={handleBlur}
+        />
+        {showCounter && <Text>Character count: {text.length}</Text>}
+        {message && <Text>{message}</Text>}
+        <View style={styles.buttonContainer}>
+          <Button title="Confirm" onPress={handleConfirm} />
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'purple',
     borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
+    width: '50%',
+  },
+  buttonContainer: {
+    width: '30%', 
+    marginTop: 20,
   },
 });
 

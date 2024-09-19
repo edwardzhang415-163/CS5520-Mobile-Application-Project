@@ -1,12 +1,21 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 
 const Header = (props) => {
   return (
     <View>
-      <Text>{props.appName}</Text>
+      <Text style={style.textStyle}>{props.appName}</Text>
     </View>
   );
 };
 
 export default Header;
+
+const style = StyleSheet.create({
+  textStyle: {
+    borderColor: 'purple',
+    borderWidth: 2,
+    padding: 10,
+  }
+})
