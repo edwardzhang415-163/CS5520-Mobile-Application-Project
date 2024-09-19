@@ -29,6 +29,10 @@ const Input = ({ onChangeText, autoFocus }) => {
     }
   };
 
+  const handleConfirm = () => {
+    console.log(text);
+  };
+
   return (
     <View>
       <TextInput
@@ -41,6 +45,7 @@ const Input = ({ onChangeText, autoFocus }) => {
       />
       {showCounter && <Text>Character count: {text.length}</Text>}
       {message && <Text>{message}</Text>}
+      <Button title="Confirm" onPress={handleConfirm} />
     </View>
   );
 };
