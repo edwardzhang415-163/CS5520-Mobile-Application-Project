@@ -9,11 +9,16 @@ export default function App() {
   const [inputText, setInputText] = useState('');
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
 
-  const handleInputData = (text) => {
-    setConfirmedText(text);
+  function handleInputData(data){
+    console.log("App", data);
+    let newGoal = {text: data, id: Math.random()};
+    setGoals((...prevGoals) => [...prevGoals, newGoal]);
+    setConfirmedText(data);
     setModalVisible(false);
   };
+
   const handleCancel = () => {
     setModalVisible(false);
   };
@@ -23,10 +28,16 @@ export default function App() {
         <Header appName={appName} />    
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+        <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
-        <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
-        <Text style={styles.text}>Welcome to {appName}</Text>
+      {goals.map((goal) => (
+        <View key={goal.id} style={styles.goalItem}>
+          <Text>{goal.text}</Text>
+        </View>
+      ))}
+        
+        {/* <Text style={styles.text}>Welcome to {appName}</Text> */}
       </View>
     </SafeAreaView>
   );
@@ -50,6 +61,15 @@ const styles = StyleSheet.create({
   bottomSection: {
     flex: 4, 
     backgroundColor: '#f0f0f0', 
+    alignItems: 'center',
+  },
+  goalItem: {
+    padding: 8,
+    backgroundColor: '#ccc',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginVertical: 4,
+    borderRadius: 5,
     alignItems: 'center',
   },
 });
