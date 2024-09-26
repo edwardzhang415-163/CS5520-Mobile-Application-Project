@@ -15,6 +15,8 @@ export default Header;
 const style = StyleSheet.create({
   textStyle: {
     borderColor: 'purple',
+    color: "purple",
+    fontSize: 20,
     borderWidth: 2,
     padding: 10,
   }
