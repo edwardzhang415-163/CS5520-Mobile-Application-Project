@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button} from "react-native";
 
 export default function GoalItem({item}) {
     return(
         // console.log("goal",item),
     <View  style={styles.goalItem}>
       <Text>{item.text}</Text>
-      
+      <Button title="X" onPress={() => onDelete(item.id)} /> 
     </View>
   )}
   
