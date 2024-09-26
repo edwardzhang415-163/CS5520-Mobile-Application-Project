@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView,ScrollView } from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ export default function App() {
   function handleInputData(data){
     console.log("App", data);
     let newGoal = {text: data, id: Math.random()};
-    setGoals((...prevGoals) => [...prevGoals, newGoal]);
+    setGoals((goals) => [...goals, newGoal]);
     setConfirmedText(data);
     setModalVisible(false);
   };
@@ -31,12 +31,13 @@ export default function App() {
         <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
-      {goals.map((goal) => (
-        <View key={goal.id} style={styles.goalItem}>
-          <Text>{goal.text}</Text>
-        </View>
-      ))}
-        
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {goals.map((goal) => (
+          <View key={goal.id} style={styles.goalItem}>
+            <Text style ={styles.text}>{goal.text}</Text>
+          </View>
+        ))}
+      </ScrollView>  
         {/* <Text style={styles.text}>Welcome to {appName}</Text> */}
       </View>
     </SafeAreaView>
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
   bottomSection: {
     flex: 4, 
     backgroundColor: '#f0f0f0', 
-    alignItems: 'center',
   },
   goalItem: {
     padding: 8,
@@ -70,6 +70,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: 4,
     borderRadius: 5,
+    alignItems: 'center',
+  },
+  scrollViewContent: {
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 });
