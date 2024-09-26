@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
 
-const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
+const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
   const [text, setText] = useState('');
   const [showCounter, setShowCounter] = useState(false);
   const [message, setMessage] = useState('');
@@ -15,7 +15,6 @@ const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
 
   const handleChangeText = (newText) => {
     setText(newText);
-    onChangeText(newText);
     setShowCounter(true);
     setMessage('');
   };

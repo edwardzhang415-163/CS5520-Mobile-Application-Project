@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, SafeAreaView,ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, FlatList} from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
 import React, { useState } from 'react';
+import GoalItem from './components/GoalItem';
 
 export default function App() {
   const appName = "Welcome to Edward's awesome App";
@@ -12,7 +13,7 @@ export default function App() {
   const [goals, setGoals] = useState([]);
 
   function handleInputData(data){
-    console.log("App", data);
+    
     let newGoal = {text: data, id: Math.random()};
     setGoals((goals) => [...goals, newGoal]);
     setConfirmedText(data);
@@ -28,16 +29,17 @@ export default function App() {
         <Header appName={appName} />    
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
-        <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
+        <Input  autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {goals.map((goal) => (
-          <View key={goal.id} style={styles.goalItem}>
-            <Text style ={styles.text}>{goal.text}</Text>
-          </View>
-        ))}
-      </ScrollView>  
+      <FlatList
+        data={goals}
+        renderItem={({ item }) => (
+        <GoalItem item={item} />
+        )}
+        // keyExtractor={item => item.id}
+        contentContainerStyle={styles.scrollViewContent}
+      />
         {/* <Text style={styles.text}>Welcome to {appName}</Text> */}
       </View>
     </SafeAreaView>
