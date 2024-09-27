@@ -1,19 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, FlatList} from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
 import React, { useState } from 'react';
+import GoalItem from './components/GoalItem';
 
 export default function App() {
   const appName = "Welcome to Edward's awesome App";
   const [inputText, setInputText] = useState('');
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
 
-  const handleInputData = (text) => {
-    setConfirmedText(text);
+  function handleInputData(data){
+    
+    let newGoal = {text: data, id: Math.random()};
+    setGoals((goals) => [...goals, newGoal]);
+    setConfirmedText(data);
     setModalVisible(false);
   };
+
   const handleCancel = () => {
     setModalVisible(false);
   };
@@ -23,10 +29,18 @@ export default function App() {
         <Header appName={appName} />    
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+        <Input  autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
-        <Input onChangeText={setInputText} autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
-        <Text style={styles.text}>Welcome to {appName}</Text>
+      <FlatList
+        data={goals}
+        renderItem={({ item }) => (
+        <GoalItem item={item} />
+        )}
+        // keyExtractor={item => item.id}
+        contentContainerStyle={styles.scrollViewContent}
+      />
+        {/* <Text style={styles.text}>Welcome to {appName}</Text> */}
       </View>
     </SafeAreaView>
   );
@@ -50,6 +64,18 @@ const styles = StyleSheet.create({
   bottomSection: {
     flex: 4, 
     backgroundColor: '#f0f0f0', 
+  },
+  goalItem: {
+    padding: 8,
+    backgroundColor: '#ccc',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginVertical: 4,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  scrollViewContent: {
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 });

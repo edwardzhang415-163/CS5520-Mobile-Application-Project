@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
 
-const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
+const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
   const [text, setText] = useState('');
   const [showCounter, setShowCounter] = useState(false);
   const [message, setMessage] = useState('');
@@ -15,7 +15,6 @@ const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
 
   const handleChangeText = (newText) => {
     setText(newText);
-    onChangeText(newText);
     setShowCounter(true);
     setMessage('');
   };
@@ -50,6 +49,7 @@ const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
       <View style={styles.container}>
+      <View style={styles.Modalcontainer}>
       <Image
           style={styles.image}
           source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
@@ -76,6 +76,7 @@ const Input = ({ onChangeText, autoFocus, onConfirm, onCancel, visible }) => {
         <View style={styles.buttonContainer}>
           <Button title="Cancel" onPress={handleCancel} />
           <Button title="Confirm" onPress={handleConfirm} disabled={text.length < 3} />  
+        </View>
         </View>
       </View>
     </Modal>
@@ -108,6 +109,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginVertical: 10,
+  },
+  Modalcontainer: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
   },
 });
 
