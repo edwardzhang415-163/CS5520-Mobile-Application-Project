@@ -26,6 +26,19 @@ export default function App() {
   const handleCancel = () => {
     setModalVisible(false);
   };
+
+  const renderEmptyComponent = () => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.text}>No goals to show</Text>
+    </View>
+  );
+
+  const renderHeaderComponent = () => (
+    <View style={styles.headerContainer}>
+      <Text style={styles.text}>My Goals</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}> 
       <View style={styles.topSection}> 
@@ -40,8 +53,9 @@ export default function App() {
         renderItem={({ item }) => (
         <GoalItem item={item} onDelete={handleDeleteGoal}/>
         )}
-        // keyExtractor={item => item.id}
         contentContainerStyle={styles.scrollViewContent}
+        ListEmptyComponent={renderEmptyComponent}
+        ListHeaderComponent={goals.length > 0 ? renderHeaderComponent : null}
       />
         {/* <Text style={styles.text}>Welcome to {appName}</Text> */}
       </View>
@@ -79,6 +93,14 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  headerContainer: {
+    padding: 10,
+    borderColor: '#f9c2ff',
+    backgroundColor: '#f9c2ff',
+    borderWidth: 1,
+    borderRadius: 5,
     alignItems: 'center',
   },
 });
