@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
 
+
 const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
   const [text, setText] = useState('');
   const [showCounter, setShowCounter] = useState(false);

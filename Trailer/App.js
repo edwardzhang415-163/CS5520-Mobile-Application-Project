@@ -13,11 +13,14 @@ export default function App() {
   const [goals, setGoals] = useState([]);
 
   function handleInputData(data){
-    
     let newGoal = {text: data, id: Math.random()};
     setGoals((goals) => [...goals, newGoal]);
     setConfirmedText(data);
     setModalVisible(false);
+  };
+
+  const handleDeleteGoal = (goalId) => {
+    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== goalId));
   };
 
   const handleCancel = () => {
@@ -35,7 +38,7 @@ export default function App() {
       <FlatList
         data={goals}
         renderItem={({ item }) => (
-        <GoalItem item={item} />
+        <GoalItem item={item} onDelete={handleDeleteGoal}/>
         )}
         // keyExtractor={item => item.id}
         contentContainerStyle={styles.scrollViewContent}
