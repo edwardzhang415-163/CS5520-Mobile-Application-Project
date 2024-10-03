@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, Button} from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
-export default function GoalItem({item, onDelete, onNavigate}) {
+export default function GoalItem({item, onDelete}) {
+  const navigation = useNavigation();
     return(
         // console.log("goal",item),
     <View  style={styles.goalItem}>
       <Text>{item.text}</Text>
-      <Button title="i" onPress={onNavigate} />
+      <Button 
+          title="i" 
+          onPress={() => navigation.navigate('Details', { goal: item })} 
+        />
       <Button title="X" onPress={() => onDelete(item.id)} /> 
     </View>
   )}

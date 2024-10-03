@@ -81,7 +81,6 @@ export default function Home({ navigation }) {
             <GoalItem 
               item={item} 
               onDelete={handleDeleteGoal} 
-              onNavigate={() => navigation.navigate('Details', {goal: item })} 
             />
         )}
         contentContainerStyle={styles.scrollViewContent}
