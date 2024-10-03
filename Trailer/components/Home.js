@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, FlatList, Alert} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity} from 'react-native';
 import Header from './Header';
 import Input from './Input';
-import React, { useState } from 'react';
 import GoalItem from './GoalItem';
 
-export default function App() {
+export default function Home({ navigation }) {
   const appName = "Welcome to Edward's awesome App";
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -78,7 +78,11 @@ export default function App() {
       <FlatList
         data={goals}
         renderItem={({ item }) => (
-        <GoalItem item={item} onDelete={handleDeleteGoal}/>
+            <GoalItem 
+              item={item} 
+              onDelete={handleDeleteGoal} 
+              onNavigate={() => navigation.navigate('Details', {goal: item })} 
+            />
         )}
         contentContainerStyle={styles.scrollViewContent}
         ListEmptyComponent={renderEmptyComponent}
