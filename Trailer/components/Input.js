@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
 
+
 const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
   const [text, setText] = useState('');
   const [showCounter, setShowCounter] = useState(false);
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   Modalcontainer: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',

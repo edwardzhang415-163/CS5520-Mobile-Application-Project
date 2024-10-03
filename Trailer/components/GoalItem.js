@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button} from "react-native";
 
-export default function GoalItem({item}) {
+export default function GoalItem({item, onDelete}) {
     return(
         // console.log("goal",item),
     <View  style={styles.goalItem}>
@@ -18,5 +18,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     borderRadius: 5,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
     });  
