@@ -1,5 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import PressableButton from '../components/PressableButton';
+import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons
+import { commonStyles } from '../styles';
 
 export default function GoalDetails({ route, navigation }) {
   const { goal } = route.params;
@@ -8,24 +11,34 @@ export default function GoalDetails({ route, navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          onPress={() => {
-            setTextColor('#ff0000'); 
-            navigation.setOptions({ title: 'Warning!' }); 
-          }}
-          title="Info"
-          color="#fff"
-        />
+        <PressableButton
+          pressedFunction={() => alert('Warning button pressed!')}
+          componentStyle={commonStyles.button}
+          pressedStyle={commonStyles.buttonPressed}
+        >
+          <MaterialIcons name="warning" size={24} color="white" /> 
+        </PressableButton>
       ),
     });
   }, [navigation]);
 
   return (
     <View style={styles.container}>
+    {route.params ? (
+    <View style={styles.container}>
       <Text style={[styles.text, { color: textColor }]}>ID: {goal.id}</Text>
       <Text style={[styles.text, { color: textColor }]}>Text: {goal.text}</Text>
+      <Button 
+        title="More Details" 
+        onPress={() => navigation.push('Details')} 
+      />
+    </View>
+     ) :
+     <Text style={styles.text}>No goal found</Text>
+    } 
     </View>
   );
+  
 }
 
 const styles = StyleSheet.create({

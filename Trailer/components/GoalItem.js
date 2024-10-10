@@ -3,6 +3,7 @@ import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from './PressableButton';
 import { colors, commonStyles } from '../styles';
+import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons
 
 export default function GoalItem({ item, onDelete }) {
   const navigation = useNavigation();
@@ -19,7 +20,7 @@ export default function GoalItem({ item, onDelete }) {
           componentStyle={commonStyles.button}
           pressedStyle={commonStyles.buttonPressed}
         >
-          <Text style={commonStyles.buttonText}>X</Text>
+          <MaterialIcons name="delete" size={24} color="white" />
         </PressableButton>
       </View>
     </Pressable>

@@ -14,7 +14,7 @@ export const commonStyles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.primary,
+    color: colors.primary,
   },
   buttonPressed: {
     backgroundColor: colors.pressed,
