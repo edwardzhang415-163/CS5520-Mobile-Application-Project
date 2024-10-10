@@ -16,7 +16,7 @@ export default function GoalDetails({ route, navigation }) {
           componentStyle={commonStyles.button}
           pressedStyle={commonStyles.buttonPressed}
         >
-          <MaterialIcons name="warning" size={24} color="white" /> 
+        {/* <MaterialIcons name="warning" size={24} color="white" />  */}
         </PressableButton>
       ),
     });
