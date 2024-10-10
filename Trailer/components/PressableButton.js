@@ -1,10 +1,15 @@
-import React, { Children } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Pressable, View } from 'react-native';
+import { commonStyles, colors } from '../styles';
 
-export default function PressableButton({ children }) {
+export default function PressableButton({ children, pressedFunction, componentStyle, pressedStyle }) {
   return (
-    <Pressable onPress={onPress}>
-        <View>{ children }</View>
+    <Pressable
+      onPress={pressedFunction}
+      style={({ pressed }) => (pressed ? [componentStyle, pressedStyle] : componentStyle)}
+      android_ripple={{ color: colors.ripple, borderless: false }}
+    >
+      <View>{children}</View>
     </Pressable>
   );
 }
