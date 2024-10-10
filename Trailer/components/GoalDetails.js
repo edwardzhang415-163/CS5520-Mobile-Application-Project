@@ -24,6 +24,7 @@ export default function GoalDetails({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+    console.log('GoalDetails: ', route.params);
     {route.params ? (
     <View style={styles.container}>
       <Text style={[styles.text, { color: textColor }]}>ID: {goal.id}</Text>
