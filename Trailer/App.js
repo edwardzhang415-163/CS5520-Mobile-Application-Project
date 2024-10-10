@@ -7,22 +7,23 @@ import GoalDetails from './components/GoalDetails';
 
 const Stack = createNativeStackNavigator();
 
+const commonHeaderOptions = {
+  headerStyle: { backgroundColor: 'lightblue' }, 
+  headerTintColor: '#fff', 
+};
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Home', headerStyle: { backgroundColor: '#f4511e' }, headerTintColor: '#fff', }} />
+      <Stack.Navigator screenOptions={commonHeaderOptions}>
+        <Stack.Screen 
+          name="Home" component={Home} options={{ title: 'Home'}} />
         <Stack.Screen 
           name="Details" 
           component={GoalDetails} 
           options={({ route, navigation }) => ({ 
             title: route.params ? route.params.goal.text : "More Details" ,
-            headerRight: () => (
-              <Button
-                onPress={() => alert('Header button pressed!')}
-                title="Info"
-              />
-            ),
+            
           })}  />
       </Stack.Navigator>
     </NavigationContainer>
