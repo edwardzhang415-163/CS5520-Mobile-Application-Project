@@ -4,7 +4,7 @@ export const colors = {
   primary: '#007BFF',
   secondary: '#ccc',
   pressed: '#ddd',
-  text: '#fff',
+  text: '',
   ripple: '#ff0000',
 };
 
@@ -21,7 +21,7 @@ export const commonStyles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonText: {
-    color: colors.text,
+    color: colors.secondary,
     fontSize: 16,
   },
   goalItem: {

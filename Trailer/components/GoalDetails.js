@@ -5,8 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons
 import { commonStyles } from '../styles';
 
 export default function GoalDetails({ route, navigation }) {
-  const { goal } = route.params;
-  const [textColor, setTextColor] = useState('#000'); 
+  console.log(route.params)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,7 +15,7 @@ export default function GoalDetails({ route, navigation }) {
           componentStyle={commonStyles.button}
           pressedStyle={commonStyles.buttonPressed}
         >
-        {/* <MaterialIcons name="warning" size={24} color="white" />  */}
+        <MaterialIcons name="warning" size={24} color="white" /> 
         </PressableButton>
       ),
     });
@@ -24,23 +23,26 @@ export default function GoalDetails({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-    console.log('GoalDetails: ', route.params);
-    {route.params ? (
-    <View style={styles.container}>
-      <Text style={[styles.text, { color: textColor }]}>ID: {goal.id}</Text>
-      <Text style={[styles.text, { color: textColor }]}>Text: {goal.text}</Text>
-      <Button 
-        title="More Details" 
-        onPress={() => navigation.push('Details')} 
-      />
-    </View>
-     ) :
-     <Text style={styles.text}>No goal found</Text>
-    } 
+      {route.params ? (
+        <View style={styles.container}>
+          <Text style={styles.title}>Goal Details</Text>
+          <Text style={styles.text}>ID: {route.params.goal.id}</Text>
+          <Text style={styles.text}>Text: {route.params.goal.text}</Text>
+          <PressableButton
+            pressedFunction={() => navigation.push('Details')}
+            componentStyle={commonStyles.button}
+            pressedStyle={commonStyles.buttonPressed}
+          >
+            <Text>More Details</Text>
+          </PressableButton>
+        </View>
+      ) : (
+        <Text style={styles.text}>No goal found</Text>
+      )}
     </View>
   );
-  
 }
+
 
 const styles = StyleSheet.create({
   container: {

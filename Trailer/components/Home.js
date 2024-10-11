@@ -55,7 +55,7 @@ export default function Home({ navigation }) {
   );
 
   const renderFooterComponent = () => (
-    <View style={styles.footerContainer}>
+    <View>
       <Button title="Delete All" onPress={handleDeleteAll} />
     </View>
   );
