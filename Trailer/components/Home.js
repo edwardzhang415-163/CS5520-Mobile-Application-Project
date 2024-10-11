@@ -77,7 +77,7 @@ export default function Home({ navigation }) {
       <View style={styles.bottomSection}> 
       <FlatList
         data={goals}
-        renderItem={({ item }) => (
+        renderItem={({ item , separators}) => (
             <GoalItem 
               item={item} 
               onDelete={handleDeleteGoal} 
