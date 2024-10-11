@@ -5,7 +5,7 @@ import PressableButton from './PressableButton';
 import { colors, commonStyles } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons
 
-export default function GoalItem({ item, onDelete }) {
+export default function GoalItem({ item, onDelete, onPressIn, onPressOut }) {
   const navigation = useNavigation();
 
   const handleLongPress = () => {
@@ -29,6 +29,8 @@ export default function GoalItem({ item, onDelete }) {
     <Pressable
       onPress={() => navigation.navigate('Details', { goal: item })}
       onLongPress={handleLongPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       style={({ pressed }) => (pressed ? [commonStyles.goalItem, commonStyles.goalItemPressed] : commonStyles.goalItem)}
       android_ripple={{ color: colors.ripple, borderless: false }}
     >

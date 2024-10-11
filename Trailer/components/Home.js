@@ -60,10 +60,8 @@ export default function Home({ navigation }) {
     </View>
   );
 
-  const renderItemSeparator = () => (
-    <View style={styles.separator}>
-    </View>
-    
+  const renderItemSeparator = ({ highlighted }) => (
+    <View style={[styles.separator, highlighted && { backgroundColor: 'blue' }]}></View>
   );
 
   return (
