@@ -81,6 +81,8 @@ export default function Home({ navigation }) {
             <GoalItem 
               item={item} 
               onDelete={handleDeleteGoal} 
+              onPressIn={separators.highlight}
+              onPressOut={separators.unhighlight}
             />
         )}
         contentContainerStyle={styles.scrollViewContent}
