@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, Touchabl
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
+import firebase from '../Firebase/firebaseSetup';
 
 export default function Home({ navigation }) {
   const appName = "Welcome to Edward's awesome App";
