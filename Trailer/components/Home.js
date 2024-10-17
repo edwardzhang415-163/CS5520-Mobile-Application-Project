@@ -60,10 +60,8 @@ export default function Home({ navigation }) {
     </View>
   );
 
-  const renderItemSeparator = () => (
-    <View style={styles.separator}>
-    </View>
-    
+  const renderItemSeparator = ({ highlighted }) => (
+    <View style={[styles.separator, highlighted && { backgroundColor: 'blue' }]}></View>
   );
 
   return (
@@ -77,10 +75,12 @@ export default function Home({ navigation }) {
       <View style={styles.bottomSection}> 
       <FlatList
         data={goals}
-        renderItem={({ item }) => (
+        renderItem={({ item , separators}) => (
             <GoalItem 
               item={item} 
               onDelete={handleDeleteGoal} 
+              onPressIn={separators.highlight}
+              onPressOut={separators.unhighlight}
             />
         )}
         contentContainerStyle={styles.scrollViewContent}
