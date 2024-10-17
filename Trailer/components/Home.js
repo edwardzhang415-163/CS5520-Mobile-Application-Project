@@ -4,10 +4,12 @@ import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import firebase from '../Firebase/firebaseSetup';
-import { writeToDB } from '../Firebase/firestoreHelper'; 
+import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper'; 
 import { collection } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseSetup';
+
+
 
 export default function Home({ navigation }) {
   const appName = "Welcome to Edward's awesome App";
@@ -20,7 +22,7 @@ export default function Home({ navigation }) {
     onSnapshot(collection(db, "goals"), (querySnapshot) => {
       goalsArray = [];
       querySnapshot.forEach((dcoumentSnapshot) => {
-        goalsArray.push(dcoumentSnapshot.data());
+        goalsArray.push({...dcoumentSnapshot.data(), id: dcoumentSnapshot.id});
       });
       console.log("goalsarra",goalsArray);
       setGoals(goalsArray);
@@ -36,8 +38,12 @@ export default function Home({ navigation }) {
     setModalVisible(false);
   };
 
-  const handleDeleteGoal = (goalId) => {
-    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== goalId));
+
+
+  async function handleDeleteGoal(goalId){
+    // setGoals(currentGoals => currentGoals.filter(goal => goal.id !== goalId));
+     deleteFromDB("goals", goalId);
+   
   };
 
   const handleCancel = () => {
@@ -55,7 +61,7 @@ export default function Home({ navigation }) {
         },
         {
           text: "Yes",
-          onPress: () => setGoals([])
+          onPress: () => deleteAllFromDB("goals")
         }
       ]
     );
