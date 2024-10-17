@@ -1,6 +1,6 @@
 import { collection, addDoc, getDocs } from "firebase/firestore"; 
 import { db } from './firebaseSetup'; // Import the database object
-import { doc, deleteDoc} from 'firebase/firestore';
+import { doc, deleteDoc, setDoc} from 'firebase/firestore';
 
 export async function writeToDB(data, collectionName) {
   try {
@@ -31,3 +31,7 @@ export async function deleteAllFromDB(collectionName) {
     console.error("Error deleting all documents: ", err);
   }
 }
+
+export async function markGoalAsCompleted(goalId) {
+  await setDoc(doc(db, "goals", goalId), { completed: true }, { merge: true });
+} 
