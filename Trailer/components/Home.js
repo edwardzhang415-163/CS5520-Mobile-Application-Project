@@ -4,6 +4,7 @@ import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import firebase from '../Firebase/firebaseSetup';
+import { writeToDB } from '../Firebase/firestoreHelper'; 
 
 export default function Home({ navigation }) {
   const appName = "Welcome to Edward's awesome App";
@@ -11,8 +12,10 @@ export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
-  function handleInputData(data){
-    let newGoal = {text: data, id: Math.random()};
+  async function handleInputData(data){
+    let newGoal = {text: data};
+    // let newGoal to db
+    await writeToDB(newGoal, "goals");
     setGoals((goals) => [...goals, newGoal]);
     setConfirmedText(data);
     setModalVisible(false);
