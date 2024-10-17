@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity} from 'react-native';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import firebase from '../Firebase/firebaseSetup';
 import { writeToDB } from '../Firebase/firestoreHelper'; 
+import { collection } from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
+import { db } from '../Firebase/firebaseSetup';
 
 export default function Home({ navigation }) {
   const appName = "Welcome to Edward's awesome App";
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  
+  useEffect(() => {
+    //querySnapshot is a list of dcoumentSnapshot objects
+    onSnapshot(collection(db, "goals"), (querySnapshot) => {
+      goalsArray = [];
+      querySnapshot.forEach((dcoumentSnapshot) => {
+        goalsArray.push(dcoumentSnapshot.data());
+      });
+      console.log("goalsarra",goalsArray);
+      setGoals(goalsArray);
+  });
+  }, []);
 
   async function handleInputData(data){
     let newGoal = {text: data};
     // let newGoal to db
     await writeToDB(newGoal, "goals");
-    setGoals((goals) => [...goals, newGoal]);
+    // setGoals((goals) => [...goals, newGoal]);
     setConfirmedText(data);
     setModalVisible(false);
   };
