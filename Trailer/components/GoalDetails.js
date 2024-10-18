@@ -1,8 +1,10 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import PressableButton from '../components/PressableButton';
-import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons
+import { MaterialIcons } from '@expo/vector-icons'; 
 import { commonStyles } from '../styles';
+import { markGoalAsWarning } from '../Firebase/firestoreHelper'; 
+
 
 export default function GoalDetails({ route, navigation }) {
   console.log(route.params)
@@ -11,7 +13,7 @@ export default function GoalDetails({ route, navigation }) {
     navigation.setOptions({
       headerRight: () => (
         <PressableButton
-          pressedFunction={() => alert('Warning button pressed!')}
+          pressedFunction={() => markGoalAsWarning(route.params.goal.id)}
           componentStyle={commonStyles.button}
           pressedStyle={commonStyles.buttonPressed}
         >
