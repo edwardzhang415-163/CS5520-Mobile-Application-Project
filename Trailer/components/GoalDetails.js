@@ -4,6 +4,8 @@ import PressableButton from '../components/PressableButton';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { commonStyles } from '../styles';
 import { markGoalAsWarning } from '../Firebase/firestoreHelper'; 
+import GoalUser from './GoalUser';
+import { FlatList } from 'react-native-web';
 
 export default function GoalDetails({ route, navigation }) {
   console.log(route.params)
@@ -36,6 +38,7 @@ export default function GoalDetails({ route, navigation }) {
           >
             <Text>More Details</Text>
           </PressableButton>
+          <GoalUser goalId ={route.params.goal.id}/>
         </View>
       ) : (
         <Text style={styles.text}>No goal found</Text>
