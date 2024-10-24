@@ -27,6 +27,7 @@ export default function Home({ navigation }) {
       console.log("goalsarra",goalsArray);
       setGoals(goalsArray);
   });
+  return () => unsubscribe();
   }, []);
 
   async function handleInputData(data){
