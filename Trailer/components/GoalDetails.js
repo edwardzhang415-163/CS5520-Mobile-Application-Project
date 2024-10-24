@@ -1,11 +1,24 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import PressableButton from '../components/PressableButton';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { commonStyles } from '../styles';
 import { markGoalAsWarning } from '../Firebase/firestoreHelper'; 
 
-
+export default function GoalUser(){
+  useEffect(() => {
+    async function fetchData() {
+    const response  = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+    }
+    fetchData();  
+  }, [])
+  
+  return (
+    <View>
+      <Text>Goal User</Text>
+    </View>
+  )
+}
 export default function GoalDetails({ route, navigation }) {
   console.log(route.params)
 
