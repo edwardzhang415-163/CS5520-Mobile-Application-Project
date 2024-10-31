@@ -40,3 +40,42 @@ export async function markGoalAsWarning(goalId) {
     console.error("Error marking goal as warning: ", err);
   }
 }
+
+export async function readAllDocFromDB(collectionName) {
+  try {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    const docsArray = [];
+    querySnapshot.forEach((doc) => {
+      docsArray.push({ ...doc.data(), id: doc.id });
+    });
+    return docsArray;
+  } catch (err) {
+    console.error("Error getting documents: ", err);
+    return [];
+  }
+}
+
+// export async function writeToSubcollection(data, collectionName, docId, subcollectionName) {
+//   try {
+//     const subcollectionRef = collection(db, collectionName, docId, subcollectionName);
+//     const docRef = await addDoc(subcollectionRef, data);
+//     console.log("Document written with ID: ", docRef.id);
+//   } catch (err) {
+//     console.error("Error adding document: ", err);
+//   }
+// }
+
+// export async function getSubcollectionDocs(collectionName, docId, subcollectionName) {
+//   try {
+//     const subcollectionRef = collection(db, collectionName, docId, subcollectionName);
+//     const querySnapshot = await getDocs(subcollectionRef);
+//     const docsArray = [];
+//     querySnapshot.forEach((documentSnapshot) => {
+//       docsArray.push({ ...documentSnapshot.data(), id: documentSnapshot.id });
+//     });
+//     return docsArray;
+//   } catch (err) {
+//     console.error("Error getting documents: ", err);
+//     return [];
+//   }
+// }
