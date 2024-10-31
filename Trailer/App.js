@@ -9,6 +9,8 @@ import Home from './components/Home';
 import GoalDetails from './components/GoalDetails';
 import LoginScreen from './components/LoginScreen';
 import SignupScreen from './components/SignupScreen';
+import Profile from './components/Profile'; // Import the Profile component
+import { Button } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +46,8 @@ export default function App() {
     <>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Details" component={GoalDetails} />
+      <Stack.Screen name="Profile" component={Profile} />
+      {/* <Stack.Screen name="Profile" component={Profile} /> Register Profile screen */}
     </>
   );
 
