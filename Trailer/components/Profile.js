@@ -1,11 +1,30 @@
-// components/Profile.js
-
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { auth } from '../Firebase/firebaseSetup'; // Import the auth instance
+import { signOut } from 'firebase/auth'; // Import the signOut function
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const user = auth.currentUser;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={async () => {
+            try {
+              await signOut(auth);
+              Alert.alert('Success', 'Signed out successfully');
+              navigation.navigate('Login');
+            } catch (error) {
+              Alert.alert('Error', error.message);
+            }
+          }}
+          title="Sign Out"
+          color="#fff"
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
