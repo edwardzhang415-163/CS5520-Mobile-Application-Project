@@ -14,8 +14,9 @@ const SignupScreen = ({ navigation }) => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       Alert.alert('Success', 'User registered successfully');
-      // Navigate to another screen if needed
+      navigation.navigate('Login');
     } catch (error) {
+        console.log(error);
       Alert.alert('Error', error.message);
     }
   };

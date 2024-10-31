@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { auth } from '../Firebase/firebaseSetup'; // Import the auth instance
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Import the function
 
-export default function LoginScreen ({ navigation }){
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Handle login logic
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      Alert.alert('Success', 'User logged in successfully');
+      navigation.navigate('Home'); // Navigate to Home screen
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
@@ -33,7 +42,7 @@ export default function LoginScreen ({ navigation }){
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
