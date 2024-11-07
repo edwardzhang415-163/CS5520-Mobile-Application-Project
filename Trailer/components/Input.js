@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
+import ImageManager from './ImageManager';
 
 
 const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
@@ -77,6 +78,7 @@ const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
         <View style={styles.buttonContainer}>
           <Button title="Cancel" onPress={handleCancel} />
           <Button title="Confirm" onPress={handleConfirm} disabled={text.length < 3} />  
+          <ImageManager /> 
         </View>
         </View>
       </View>
