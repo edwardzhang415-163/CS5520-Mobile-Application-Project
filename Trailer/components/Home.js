@@ -7,7 +7,7 @@ import firebase from '../Firebase/firebaseSetup';
 import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreHelper'; 
 import { collection } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
-import { db } from '../Firebase/firebaseSetup';
+import { db , storage } from '../Firebase/firebaseSetup';
 
 
 
@@ -38,12 +38,18 @@ export default function Home({ navigation }) {
   }, []);
 
 
-  async function handleInputData(data){
-    let newGoal = {text: data};
-    // let newGoal to db
-    await writeToDB(newGoal, "goals");
-    // setGoals((goals) => [...goals, newGoal]);
-    setConfirmedText(data);
+  const handleInputData = async (data) => {
+    let newGoal = { text: data.text, owner: auth.currentUser.uid };
+    if (data.imageUri) {
+      const response = await fetch(data.imageUri);
+      const blob = await response.blob();
+      const imageName = data.imageUri.substring(data.imageUri.lastIndexOf('/') + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      newGoal.imageUri = uploadResult.metadata.fullPath;
+    }
+    await addDoc(collection(db, "goals"), newGoal);
+    setConfirmedText(data.text);
     setModalVisible(false);
   };
 
