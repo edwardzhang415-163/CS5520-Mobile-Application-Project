@@ -1,86 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, Modal, Alert, Image } from 'react-native';
-import ImageManager from './ImageManager';
-
+import React, { useState, useRef } from 'react';
+import { View, TextInput, Button, Modal, StyleSheet, Text } from 'react-native';
+import ImageManager from './ImageManager'; // Import ImageManager
 
 const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
-  const [text, setText] = useState('');
-  const [showCounter, setShowCounter] = useState(false);
-  const [message, setMessage] = useState('');
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (autoFocus && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [autoFocus]);
-
-  const handleChangeText = (newText) => {
-    setText(newText);
-    setShowCounter(true);
-    setMessage('');
-  };
-
-  const handleBlur = () => {
-    setShowCounter(false);
-    if (text.length >= 3) {
-      setMessage('Thank you');
-    } else {
-      setMessage('Please type more than 3 characters');
-    }
-  };
+  const [inputValue, setInputValue] = useState('');
+  const [imageUri, setImageUri] = useState(null);
 
   const handleConfirm = () => {
-    console.log(text);
-    onConfirm(text);
-    setShowCounter(false);
-    setText('');
+    onConfirm({ text: inputValue, imageUri });
+    setInputValue('');
+    setImageUri(null);
   };
 
-  const handleCancel = () => {
-    Alert.alert(
-      'Confirm Cancel',
-      'Are you sure you want to cancel?',
-      [
-        { text: 'cancel', style: 'cancel' },
-        { text: 'ok', onPress: () => { onCancel(); setText(''); } }
-      ]
-    );
+  const handleImageTaken = (uri) => {
+    setImageUri(uri);
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent={true}>
+    <Modal visible={visible} animationType="slide">
       <View style={styles.container}>
-      <View style={styles.Modalcontainer}>
-      <Image
-          style={styles.image}
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
-          alt="Network Image"
-        />
-        <Image
-          style={styles.image}
-          source={require('../assets/2617812.png')}
-          alt="Local Image"
-        />
         <TextInput
-          ref={inputRef}
           style={styles.input}
-          placeholder='Enter text here'
-          value={text}
-          onChangeText={handleChangeText}
-          onFocus={() => {
-            setMessage('');
-          }}
-          onBlur={handleBlur}
+          autoFocus={autoFocus}
+          value={inputValue}
+          onChangeText={setInputValue}
         />
-        {showCounter && <Text>Character count: {text.length}</Text>}
-        {message && <Text>{message}</Text>}
-        <View style={styles.buttonContainer}>
-          <Button title="Cancel" onPress={handleCancel} />
-          <Button title="Confirm" onPress={handleConfirm} disabled={text.length < 3} />  
-          <ImageManager /> 
-        </View>
-        </View>
+        <Button title="Confirm" onPress={handleConfirm} />
+        <Button title="Cancel" onPress={onCancel} />
+        <ImageManager onImageTaken={handleImageTaken} /> {/* Pass the function as a prop */}
+        {imageUri && <Text>Image URI: {imageUri}</Text>}
       </View>
     </Modal>
   );
@@ -89,35 +37,15 @@ const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-    
+    alignItems: 'center',
   },
   input: {
-    height: 40,
-    borderColor: 'purple',
+    width: '80%',
+    borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    width: '50%',
-  },
-  buttonContainer: {
-   flexDirection: 'row', 
-    justifyContent: 'space-between',
-    width: '60%', 
-    marginTop: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginVertical: 10,
-  },
-  Modalcontainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
+    padding: 10,
+    marginBottom: 10,
   },
 });
 
