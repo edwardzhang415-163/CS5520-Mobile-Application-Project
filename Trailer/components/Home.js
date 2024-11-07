@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity} from 'react-native';
 import Header from './Header';
 import Input from './Input';
@@ -16,23 +16,27 @@ export default function Home({ navigation }) {
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
-  
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="Profile" onPress={() => navigation.navigate('Profile')} />
+      ),
+    });
+  }, [navigation]);
+
   useEffect(() => {
-    //querySnapshot is a list of dcoumentSnapshot objects
-    onSnapshot(collection(db, "goals"), (querySnapshot) => {
-      goalsArray = [];
-      querySnapshot.forEach((dcoumentSnapshot) => {
-        goalsArray.push({...dcoumentSnapshot.data(), id: dcoumentSnapshot.id});
+    const unsubscribe = onSnapshot(collection(db, "goals"), (querySnapshot) => {
+      const goalsArray = [];
+      querySnapshot.forEach((doc) => {
+        goalsArray.push({ id: doc.id, ...doc.data() });
       });
-      console.log("goalsarra",goalsArray);
       setGoals(goalsArray);
-  });
-  return () => {
-    if (unsubscribe) {
-      unsubscribe();
-    }
-  };
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
+
 
   async function handleInputData(data){
     let newGoal = {text: data};
