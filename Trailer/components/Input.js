@@ -19,16 +19,19 @@ const Input = ({ autoFocus, onConfirm, onCancel, visible }) => {
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.container}>
+        <Text style={styles.label}>Enter your goal:</Text>
         <TextInput
           style={styles.input}
           autoFocus={autoFocus}
           value={inputValue}
           onChangeText={setInputValue}
         />
-        <Button title="Confirm" onPress={handleConfirm} />
-        <Button title="Cancel" onPress={onCancel} />
-        <ImageManager onImageTaken={handleImageTaken} /> {/* Pass the function as a prop */}
-        {imageUri && <Text>Image URI: {imageUri}</Text>}
+        <ImageManager onImageTaken={handleImageTaken} />
+        {imageUri && <Text style={styles.imageUri}>Image selected: {imageUri}</Text>}
+        <View style={styles.buttonContainer}>
+          <Button title="Cancel" onPress={onCancel} />
+          <Button title="Confirm" onPress={handleConfirm} />
+        </View>
       </View>
     </Modal>
   );
@@ -39,13 +42,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 16,
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
   },
   input: {
-    width: '80%',
-    borderColor: 'gray',
-    borderWidth: 1,
+    width: '100%',
     padding: 10,
+    borderColor: '#ccc',
+    borderWidth: 1,
     marginBottom: 10,
+  },
+  imageUri: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'gray',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
 

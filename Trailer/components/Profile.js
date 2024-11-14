@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { auth } from '../Firebase/firebaseSetup'; // Import the auth instance
 import { signOut } from 'firebase/auth'; // Import the signOut function
+import LocationManager from './LocationManager'; // Import LocationManager
 
 const Profile = ({ navigation }) => {
   const user = auth.currentUser;
@@ -14,13 +15,12 @@ const Profile = ({ navigation }) => {
             try {
               await signOut(auth);
               Alert.alert('Success', 'Signed out successfully');
-              navigation.navigate('Login');
+              navigation.replace('Login');
             } catch (error) {
               Alert.alert('Error', error.message);
             }
           }}
           title="Sign Out"
-          color="#fff"
         />
       ),
     });
@@ -28,6 +28,7 @@ const Profile = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Profile</Text>
       {user ? (
         <>
           <Text style={styles.text}>Email: {user.email}</Text>
@@ -36,6 +37,7 @@ const Profile = ({ navigation }) => {
       ) : (
         <Text style={styles.text}>No user is logged in</Text>
       )}
+      <LocationManager /> {/* Render LocationManager component */}
     </View>
   );
 };
@@ -47,9 +49,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
   text: {
     fontSize: 18,
-    marginBottom: 8,
+    marginBottom: 10,
   },
 });
 

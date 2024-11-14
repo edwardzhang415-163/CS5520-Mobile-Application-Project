@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Pressable,Alert } from 'react-native';
+import { Text, View, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from './PressableButton';
 import { colors, commonStyles } from '../styles';
