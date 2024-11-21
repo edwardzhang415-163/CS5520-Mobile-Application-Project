@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity, Platform} from 'react-native';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
@@ -8,6 +8,9 @@ import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreH
 import { collection } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { db , storage } from '../Firebase/firebaseSetup';
+import * as Notifications from 'expo-notifications';
+import * as Constants from 'expo-constants';
+import { verifyPermission } from './NotificationManager';
 
 
 
@@ -16,6 +19,7 @@ export default function Home({ navigation }) {
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  const [pushToken, setPushToken] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,6 +41,37 @@ export default function Home({ navigation }) {
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
+  useEffect(() => {
+    async function configurePushNotifications() {
+      try {
+        const hasPermission = await verifyPermission();
+        
+        if (!hasPermission) {
+          console.log('Notification permission not granted');
+          return;
+        }
+
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+          });
+        }
+
+        const tokenData = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+
+        console.log('Push token:', tokenData.data);
+        setPushToken(tokenData.data);
+
+      } catch (error) {
+        console.error('Error configuring push notifications:', error);
+      }
+    }
+
+    configurePushNotifications();
+  }, []);
 
   const handleInputData = async (data) => {
     let newGoal = { text: data.text, owner: auth.currentUser.uid };
@@ -104,13 +139,43 @@ export default function Home({ navigation }) {
     <View style={[styles.separator, highlighted && { backgroundColor: 'blue' }]}></View>
   );
 
+  const sendPushNotificationHandler = async () => {
+    try {
+      const response = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: pushToken,
+          title: "Push Notification",
+          body: "This is a push notification",
+          data: { screen: 'Home' }  // Optional data to pass to the notification
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send push notification');
+      }
+
+      Alert.alert('Success', 'Push notification sent!');
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+      Alert.alert('Error', 'Failed to send push notification');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}> 
       <View style={styles.topSection}> 
         <Header appName={appName} />    
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
-        <Input  autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
+        <Button 
+          title="Send Push Notification" 
+          onPress={sendPushNotificationHandler}
+        />
+        <Input autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
       <FlatList
