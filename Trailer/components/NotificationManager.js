@@ -2,18 +2,18 @@ import React from 'react';
 import { View, Button, Alert, StyleSheet } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
+export const verifyPermission = async () => {
+  const permissionStatus = await Notifications.getPermissionsAsync();
+  
+  if (permissionStatus.granted) {
+    return true;
+  }
+
+  const requestedPermission = await Notifications.requestPermissionsAsync();
+  return requestedPermission.granted;
+};
+
 const NotificationManager = () => {
-  const verifyPermission = async () => {
-    const permissionStatus = await Notifications.getPermissionsAsync();
-    
-    if (permissionStatus.granted) {
-      return true;
-    }
-
-    const requestedPermission = await Notifications.requestPermissionsAsync();
-    return requestedPermission.granted;
-  };
-
   const scheduleNotificationHandler = async () => {
     try {
       const hasPermission = await verifyPermission();

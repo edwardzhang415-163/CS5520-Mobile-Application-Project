@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, Alert, TouchableOpacity, Platform} from 'react-native';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
@@ -8,6 +8,9 @@ import { writeToDB, deleteFromDB, deleteAllFromDB } from '../Firebase/firestoreH
 import { collection } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { db , storage } from '../Firebase/firebaseSetup';
+import * as Notifications from 'expo-notifications';
+import * as Constants from 'expo-constants';
+import { verifyPermission } from './NotificationManager';
 
 
 
@@ -37,6 +40,38 @@ export default function Home({ navigation }) {
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
+  useEffect(() => {
+    async function configurePushNotifications() {
+      try {
+        const hasPermission = await verifyPermission();
+        
+        if (!hasPermission) {
+          console.log('Notification permission not granted');
+          return;
+        }
+
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+          });
+        }
+
+        const pushToken = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+
+        console.log('Push token:', pushToken.data);
+        // Here you would typically send this token to your backend
+        // await sendTokenToBackend(pushToken.data);
+
+      } catch (error) {
+        console.error('Error configuring push notifications:', error);
+      }
+    }
+
+    configurePushNotifications();
+  }, []);
 
   const handleInputData = async (data) => {
     let newGoal = { text: data.text, owner: auth.currentUser.uid };
