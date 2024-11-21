@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { auth } from '../Firebase/firebaseSetup'; // Import the auth instance
 import { signOut } from 'firebase/auth'; // Import the signOut function
+import NotificationManager from './NotificationManager';
 
 const Profile = ({ navigation }) => {
   const user = auth.currentUser;
@@ -32,6 +33,7 @@ const Profile = ({ navigation }) => {
         <>
           <Text style={styles.text}>Email: {user.email}</Text>
           <Text style={styles.text}>UID: {user.uid}</Text>
+          <NotificationManager />
         </>
       ) : (
         <Text style={styles.text}>No user is logged in</Text>
