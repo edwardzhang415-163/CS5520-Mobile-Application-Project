@@ -19,6 +19,7 @@ export default function Home({ navigation }) {
   const [confirmedText, setConfirmedText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  const [pushToken, setPushToken] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -57,13 +58,12 @@ export default function Home({ navigation }) {
           });
         }
 
-        const pushToken = await Notifications.getExpoPushTokenAsync({
+        const tokenData = await Notifications.getExpoPushTokenAsync({
           projectId: Constants.expoConfig.extra.eas.projectId,
         });
 
-        console.log('Push token:', pushToken.data);
-        // Here you would typically send this token to your backend
-        // await sendTokenToBackend(pushToken.data);
+        console.log('Push token:', tokenData.data);
+        setPushToken(tokenData.data);
 
       } catch (error) {
         console.error('Error configuring push notifications:', error);
@@ -139,13 +139,43 @@ export default function Home({ navigation }) {
     <View style={[styles.separator, highlighted && { backgroundColor: 'blue' }]}></View>
   );
 
+  const sendPushNotificationHandler = async () => {
+    try {
+      const response = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: pushToken,
+          title: "Push Notification",
+          body: "This is a push notification",
+          data: { screen: 'Home' }  // Optional data to pass to the notification
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send push notification');
+      }
+
+      Alert.alert('Success', 'Push notification sent!');
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+      Alert.alert('Error', 'Failed to send push notification');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}> 
       <View style={styles.topSection}> 
         <Header appName={appName} />    
         <Text>{confirmedText}</Text>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
-        <Input  autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
+        <Button 
+          title="Send Push Notification" 
+          onPress={sendPushNotificationHandler}
+        />
+        <Input autoFocus={true} onConfirm={handleInputData} onCancel={handleCancel} visible={modalVisible} />
       </View>
       <View style={styles.bottomSection}> 
       <FlatList
